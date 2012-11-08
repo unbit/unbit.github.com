@@ -9,6 +9,9 @@
 		if (!port) {
 			port = 5001;
 		}
+		else {
+			port = port.slice(1);
+		}	
 		uwsgi_stats_setup('http://127.0.0.1:' + port, 3000);
 
 		uwsgi_stats_add('listen_queue', function(data, json) {
