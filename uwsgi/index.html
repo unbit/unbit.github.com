@@ -1,0 +1,84 @@
+<html>
+<head>
+<script src="/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script src="/jquery.flot.min.js" type="text/javascript"></script>
+<script src="/uwsgi.stats.js" type="text/javascript"></script>
+<script>
+	$(function() {
+		var port = window.location.search;
+		if (!port) {
+			port = 5001;
+		}
+		uwsgi_stats_setup('http://127.0.0.1:' + port, 3000);
+
+		uwsgi_stats_add('listen_queue', function(data, json) {
+			return json['listen_queue'];
+		}, 128);
+
+		uwsgi_stats_add('signal_queue', function(data, json) {
+			return json['signal_queue'];
+		}, 300, 'orange');
+
+		var workers_last_value = 0;
+		uwsgi_stats_add('requests', function(data, json) {
+			workers_sum = 0;
+			var first_round = false;
+			if (workers_last_value == 0) {
+				first_round = true;
+			}
+			for(var i=0;i<json['workers'].length;i++) {
+				workers_sum += json['workers'][i]['requests'];
+			}
+			new_value = workers_sum - workers_last_value;
+			workers_last_value = workers_sum;
+			if (first_round) {
+				return 0;
+			}
+			if (new_value < 0) {
+				new_value = workers_last_value;
+			}
+			return new_value;
+		}, 10000, 'red');
+
+		var static_last_value = 0;
+                uwsgi_stats_add('static_requests', function(data, json) {
+                        static_sum = 0;
+                        var first_round = false;
+                        if (static_last_value == 0) {
+                                first_round = true;
+                        }
+                        for(var i=0;i<json['workers'].length;i++) {
+				for(var j=0;j<json['workers'][i]['cores'].length;j++) {
+                                	static_sum += json['workers'][i]['cores'][j]['static_requests'];
+				}
+                        }
+                        new_value = static_sum - static_last_value;
+                        static_last_value = static_sum;
+                        if (first_round) {
+                                return 0;
+                        }
+                        if (new_value < 0) {
+                                new_value = static_last_value;
+                        }
+                        return new_value;
+                }, 10000, 'blue');
+
+		uwsgi_stats_run();
+	});
+</script>
+</head>
+<body>
+<h3>listen queue</h3>
+<div id="listen_queue" style="width:600px;height:150px"></div>
+
+<h3>signal queue</h3>
+<div id="signal_queue" style="width:600px;height:150px"></div>
+
+<h3>requests</h3>
+<div id="requests" style="width:600px;height:150px"></div>
+
+<h3>static requests</h3>
+<div id="static_requests" style="width:600px;height:150px"></div>
+
+</body>
+</html>
