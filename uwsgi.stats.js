@@ -2,7 +2,10 @@ var uwsgi_stats = []
 var uwsgi_stats_url;
 var uwsgi_stats_freq;
 
-function uwsgi_stats_setup(url, freq=3000) {
+function uwsgi_stats_setup(url, freq) {
+	if (!freq) {
+		freq = 3000;
+	}
 	uwsgi_stats_url = url;
 	uwsgi_stats_freq = freq;
 }
@@ -15,7 +18,13 @@ function uwsgi_stats_initialize(max) {
         return res;
 }
 
-function uwsgi_stats_add(container_id, hook, y_max=300, color='#B1D535', config=undefined) {
+function uwsgi_stats_add(container_id, hook, y_max, color, config) {
+	if (!y_max) {
+		y_max = 300;
+	}
+	if (!color) {
+		color = '#B1D535';
+	}
 	var container = $("#" + container_id);
 	var max = container.outerWidth() / 2 || 300;
 	var us = {}
