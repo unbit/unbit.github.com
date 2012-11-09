@@ -41,7 +41,7 @@
 				new_value = workers_last_value;
 			}
 			return new_value;
-		}, 10000, 'red');
+		}, 3000, 'red');
 
 		var static_last_value = 0;
                 uwsgi_stats_add('static_requests', function(data, json) {
@@ -64,7 +64,7 @@
                                 new_value = static_last_value;
                         }
                         return new_value;
-                }, 10000, 'blue');
+                }, 3000, 'blue');
                 
                 var routed_last_value = 0;
                 uwsgi_stats_add('routed_requests', function(data, json) {
@@ -87,7 +87,7 @@
                                 new_value = routed_last_value;
                         }
                         return new_value;
-                }, 10000, 'violet');
+                }, 3000, 'violet');
 
 		uwsgi_stats_run();
 	});
