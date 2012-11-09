@@ -65,6 +65,29 @@
                         }
                         return new_value;
                 }, 10000, 'blue');
+                
+                var routed_last_value = 0;
+                uwsgi_stats_add('routed_requests', function(data, json) {
+                        routed_sum = 0;
+                        var first_round = false;
+                        if (routed_last_value == 0) {
+                                first_round = true;
+                        }
+                        for(var i=0;i<json['workers'].length;i++) {
+				for(var j=0;j<json['workers'][i]['cores'].length;j++) {
+                                	routed_sum += json['workers'][i]['cores'][j]['routed_requests'];
+				}
+                        }
+                        new_value = routed_sum - routed_last_value;
+                        routed_last_value = routed_sum;
+                        if (first_round) {
+                                return 0;
+                        }
+                        if (new_value < 0) {
+                                new_value = routed_last_value;
+                        }
+                        return new_value;
+                }, 10000, 'orange');
 
 		uwsgi_stats_run();
 	});
@@ -98,6 +121,9 @@ The system is based on the <a href="http://www.flotcharts.org/">flot</a> project
 
 <h3>static requests</h3>
 <div id="static_requests" style="width:600px;height:150px"></div>
+
+<h3>routed requests</h3>
+<div id="routed_requests" style="width:600px;height:150px"></div>
 
 </body>
 </html>
