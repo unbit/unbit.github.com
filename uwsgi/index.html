@@ -76,7 +76,13 @@ This is a gift from the Unbit staff allowing you to get a visual appealing repre
 of your uWSGI instances stats. It will gather statistics from your local port 5001, so you need to
 make some kind of tunneling to your remote instances. The system works with uWSGI versions >= 1.4
 as the <b>--stats-http</b> option is required. If you want to reduce the bandwidth required for tunneling stats
-you can add the <b>--stats-minified</b> option.
+you can add the <b>--stats-minified</b> option too.<br/>
+To make an ssh tunnel just use something like:
+
+<i>ssh -N -L 5001:127.0.0.1:PORT USER@SERVER</i><br/>
+
+where PORT is the port of the stats server and USER and SERVER are the SSH connection informations.
+
 <h3>listen queue</h3>
 <div id="listen_queue" style="width:600px;height:150px"></div>
 
