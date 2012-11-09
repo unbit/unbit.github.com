@@ -81,7 +81,11 @@ To make an ssh tunnel just use something like:
 
 <i>ssh -N -L 5001:127.0.0.1:PORT USER@SERVER</i><br/>
 
-where PORT is the port of the stats server and USER and SERVER are the SSH connection informations.
+where PORT is the port of the stats server and USER and SERVER are the SSH connection informations.<br/>
+If your stats server is listening on a unix socket you can make a tunnel too using ssh+socat.<br/>
+If for some reason the port 5001 is busy on your local machine, you can change it adding the QUERY_STRING to this page.<br/>
+Example: <i></i>http://unbit.github.com/uwsgi/?5017</i> for listening to port 5017.<br/>
+The system is based on the flot project.
 
 <h3>listen queue</h3>
 <div id="listen_queue" style="width:600px;height:150px"></div>
