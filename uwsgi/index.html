@@ -71,6 +71,12 @@
 </script>
 </head>
 <body>
+<h2>uWSGI realtime stats viewer</h2>
+This is a gift from the Unbit staff allowing you to get a visual appealing representation
+of your uWSGI instances stats. It will gather statistics from your local port 5001, so you need to
+make some kind of tunneling to your remote instances. The system works with uWSGI versions >= 1.4
+as the <b>--stats-http</b> option is required. If you want to reduce the bandwidth required for tunneling stats
+you can add the <b>--stats-minified</b> option.
 <h3>listen queue</h3>
 <div id="listen_queue" style="width:600px;height:150px"></div>
 
